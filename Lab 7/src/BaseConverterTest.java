@@ -14,6 +14,13 @@ public class BaseConverterTest {
     // ---- starter tests ----
 
     @Test
+    void digitValue() {
+        assertEquals(5, BaseConverter.digitValue('5'));
+        assertEquals(10, BaseConverter.digitValue('a'));
+        assertEquals(19, BaseConverter.digitValue('J'));
+    }
+
+    @Test
     void toDecimalLectureExamples() {
         assertEquals(45, BaseConverter.toDecimal("101101", 2));
         assertEquals(45, BaseConverter.toDecimal("55", 8));

@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 
 /**
@@ -36,8 +37,19 @@ public class BaseConverter {
      * 'A'-'Z' (or 'a'-'z') are 10-35. Returns -1 for any other character.
      * Example: digitValue('7') is 7, digitValue('d') is 13, digitValue('?') is -1.
      */
+    //Purpose: Returns the value of a single digit character
+    //Input: Character ch
+    //Output: Integer int
+    //Example: BaseConverter.digitValue('a') -> 10
     public static int digitValue(char ch) {
         // TODO
+        char input = Character.toUpperCase(ch);
+        for (int i = 0; i < 36; i++) {
+            if (input == DIGITS.charAt(i)) {
+                return i;
+            }
+        }
+
         return -1;
     }
 
@@ -109,7 +121,9 @@ public class BaseConverter {
      */
     public static int countDigits(int n, int base) {
         // TODO: no loops - use recursion
+
         return 0;
+
     }
 
     // ---------------------------------------------------------------
