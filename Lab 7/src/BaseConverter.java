@@ -37,17 +37,17 @@ public class BaseConverter {
      * 'A'-'Z' (or 'a'-'z') are 10-35. Returns -1 for any other character.
      * Example: digitValue('7') is 7, digitValue('d') is 13, digitValue('?') is -1.
      */
-    //Purpose: Returns the value of a single digit character
-    //Input: Character ch
-    //Output: Integer int
-    //Example: BaseConverter.digitValue('a') -> 10
+    /*
+        Purpose: Returns the value of a single digit character
+        Input: Character ch
+        Output: Integer int
+        Example: BaseConverter.digitValue('a') -> 10
+     */
     public static int digitValue(char ch) {
         // TODO
         char input = Character.toUpperCase(ch);
-        for (int i = 0; i < 36; i++) {
-            if (input == DIGITS.charAt(i)) {
-                return i;
-            }
+        for (int i = 0; i < DIGITS.length(); i++) {
+            if (input == DIGITS.charAt(i)) {return i;}
         }
 
         return -1;
@@ -60,11 +60,32 @@ public class BaseConverter {
      * null or empty, if any character is not a valid digit in that base, or
      * if the value is larger than Integer.MAX_VALUE
      */
+    /*
+        Purpose:
+        Input: String digits; Integer base
+        Output: Integer int
+        Example: BaseConverter.toDecimal("101101", 2) -> 45
+     */
     public static int toDecimal(String digits, int base) {
         // TODO: check the base and the digits, then read the digits left to right:
         //       value = value * base + digit
         //       (keep value in a long so you can tell when it passes Integer.MAX_VALUE)
-        return 0;
+        long value = 0;
+        checkBase(base);
+        if (digits == null || digits.isEmpty()){throw new IllegalArgumentException();}
+        char[] digitsArray = digits.toCharArray();
+
+        for (int i =0; i < digitsArray.length; i++){
+            int digit = digitValue(digitsArray[i]);
+
+            if (digit == -1 || digit >= base) {throw new IllegalArgumentException();}
+
+            value = value * base + digit;
+
+            if (value > Integer.MAX_VALUE){throw new IllegalArgumentException();}
+        }
+
+        return (int) value;
     }
 
     // ---------------------------------------------------------------
@@ -77,9 +98,16 @@ public class BaseConverter {
      * Example: digitChar(13) is 'D'.
      * throws IllegalArgumentException if value is not 0 to 35
      */
+    /*
+        Purpose: Returns the digit or letter from the value index of DIGITS.
+        Input: Integer int
+        Output: Character char
+        Example: BaseConverter.digitChar(10) -> 'A'
+     */
     public static char digitChar(int value) {
         // TODO
-        return '?';
+        if (value < 0 || value > 35){throw new IllegalArgumentException();}
+        return DIGITS.charAt(value);
     }
 
     /**
@@ -131,12 +159,26 @@ public class BaseConverter {
     // ---------------------------------------------------------------
 
     /** Throws IllegalArgumentException unless base is 2 to 36. */
+    /*
+        Purpose: Checks if the base is within the range of 2 to 36 and throws an IllegalArguementException if out of range.
+        Input: N/A
+        Output: N/A
+        Example: checkBase(0) -> IllegalArgumentException();
+     */
     private static void checkBase(int base) {
         // TODO
+        if (base < 2 || base > 36) {throw new IllegalArgumentException();}
     }
 
     /** Throws IllegalArgumentException if n is negative. */
+    /*
+        Purpose: Checks if the base is negative and throws an IllegalArguementException if true.
+        Input: N/A
+        Output: N/A
+        Example: checkNonNegative(-1) -> IllegalArguementException();
+     */
     private static void checkNonNegative(int n) {
         // TODO
+        if (n < 0) {throw new IllegalArgumentException();}
     }
 }

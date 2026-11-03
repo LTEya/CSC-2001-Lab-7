@@ -14,10 +14,29 @@ public class BaseConverterTest {
     // ---- starter tests ----
 
     @Test
-    void digitValue() {
+    void digitValueTest() {
         assertEquals(5, BaseConverter.digitValue('5'));
         assertEquals(10, BaseConverter.digitValue('a'));
         assertEquals(19, BaseConverter.digitValue('J'));
+    }
+
+    @Test
+    void toDecimalStringTest(){
+        assertEquals(45, BaseConverter.toDecimal("2d", 16));
+        assertEquals(45, BaseConverter.toDecimal("101101", 2));
+        assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("", 1));
+        assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal(null,36));
+        assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("80000000", 16));
+        assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("129", 8));
+    }
+
+    @Test
+    void digitCharTest(){
+        assertEquals('0', BaseConverter.digitChar(0));
+        assertEquals('Z', BaseConverter.digitChar(35));
+        assertThrows(IllegalArgumentException.class, () -> BaseConverter.digitChar(-1));
+        assertThrows(IllegalArgumentException.class, () -> BaseConverter.digitChar(36));
+
     }
 
     @Test
