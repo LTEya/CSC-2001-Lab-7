@@ -1,5 +1,4 @@
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 
 /**
@@ -118,10 +117,32 @@ public class BaseConverter {
      * Example: toBase(45, 2) is "101101", toBase(45, 16) is "2D".
      * throws IllegalArgumentException if n is negative or base is not 2 to 36
      */
+    /*
+        Purpose: Returns n written in the given base
+        Input: 2 Integers n and base
+        Output: String
+        Example: BaseConverter.toBase(10, 2) -> 1010
+     */
     public static String toBase(int n, int base) {
         // TODO: push each remainder onto the stack, then pop them off
+        checkBase(base);
+        checkNonNegative(n);
+        if (n == 0) {
+            return "0";
+        }
+
         Deque<Character> stack = new ArrayDeque<>();
-        return "";
+        while (n > 0) {
+            stack.push(digitChar(n % base));
+            n = n / base;
+        }
+
+        StringBuilder result = new StringBuilder();
+        while (!stack.isEmpty()) {
+            result.append(stack.pop());
+        }
+
+        return result.toString();
     }
 
     // ---------------------------------------------------------------
@@ -135,9 +156,22 @@ public class BaseConverter {
      * Example: toBaseRec(45, 3) is "1200".
      * throws IllegalArgumentException if n is negative or base is not 2 to 36
      */
+    /*
+        Purpose: Returns n written in the given base, the same as toBase, but recursively and without a stack
+        Input: 2 Integers n and base
+        Output: String
+        Example: BaseConverter.toBaseRec(10, 2) -> 1010
+     */
     public static String toBaseRec(int n, int base) {
         // TODO: no loops and no stack - use recursion
-        return "";
+        checkBase(base);
+        checkNonNegative(n);
+
+        if (n < base) {
+            return String.valueOf(digitChar(n));
+        }
+
+        return toBaseRec(n / base, base) + digitChar(n % base);
     }
 
     /**
@@ -149,9 +183,14 @@ public class BaseConverter {
      */
     public static int countDigits(int n, int base) {
         // TODO: no loops - use recursion
+        checkBase(base);
+        checkNonNegative(n);
 
-        return 0;
+        if (n < base) {
+            return 1;
+        }
 
+        return 1 + countDigits(n / base, base);
     }
 
     // ---------------------------------------------------------------
@@ -182,3 +221,8 @@ public class BaseConverter {
         if (n < 0) {throw new IllegalArgumentException();}
     }
 }
+
+// Questions:
+// 1.
+// 2. O(log n) and O(log n)
+// 3.
