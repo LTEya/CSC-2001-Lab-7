@@ -60,7 +60,7 @@ public class BaseConverter {
      * if the value is larger than Integer.MAX_VALUE
      */
     /*
-        Purpose:
+        Purpose: Returns the value of digits read as a number in the given base
         Input: String digits; Integer base
         Output: Integer int
         Example: BaseConverter.toDecimal("101101", 2) -> 45
