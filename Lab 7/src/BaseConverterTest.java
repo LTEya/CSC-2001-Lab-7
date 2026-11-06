@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.BitSet;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,6 +64,8 @@ public class BaseConverterTest {
         assertEquals(10, BaseConverter.digitValue('a'));
         assertEquals(19, BaseConverter.digitValue('J'));
         assertEquals(-1,BaseConverter.digitValue('/'));
+        assertEquals(-1,BaseConverter.digitValue('#'));
+        assertEquals(-1,BaseConverter.digitValue('('));
     }
 
     @Test
@@ -74,15 +77,16 @@ public class BaseConverterTest {
         assertEquals(226, BaseConverter.toDecimal("6A",36));
         assertEquals(Integer.MAX_VALUE, BaseConverter.toDecimal("2147483647", 10));
         assertEquals(Integer.MAX_VALUE, BaseConverter.toDecimal("7FFFFFFF", 16));
+        assertEquals(Integer.MAX_VALUE, BaseConverter.toDecimal("17777777777",8));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("", 1));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal(null,36));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("80000000", 16));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("129", 8));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("-45", 10));
-        assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("4 5", 1));
+        assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("4 5", 10));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal(null, 2));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("100", 1));
-        assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("80000000", 16));
+        assertThrows(IllegalArgumentException.class, () -> BaseConverter.toDecimal("100", 37));
     }
 
     @Test
@@ -90,6 +94,7 @@ public class BaseConverterTest {
         assertEquals('0', BaseConverter.digitChar(0));
         assertEquals('Z', BaseConverter.digitChar(35));
         assertEquals('A', BaseConverter.digitChar(10));
+        assertEquals('9', BaseConverter.digitChar(9));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.digitChar(-1));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.digitChar(36));
     }
@@ -124,6 +129,10 @@ public class BaseConverterTest {
         assertEquals(1, BaseConverter.countDigits(0,10));
         assertEquals(2, BaseConverter.countDigits(10, 10));
         assertEquals(11, BaseConverter.countDigits(1024, 2));
+        assertEquals(1, BaseConverter.countDigits(9, 10));
+        assertEquals(2, BaseConverter.countDigits(10, 10));
+        assertEquals(2, BaseConverter.countDigits(99, 10));
+        assertEquals(3, BaseConverter.countDigits(100, 10));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.countDigits(-1, 10));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.countDigits(10, 1));
         assertThrows(IllegalArgumentException.class, () -> BaseConverter.countDigits(10, 37));
@@ -132,10 +141,12 @@ public class BaseConverterTest {
     @Test
     void conversionLoopTest(){
         for (int base = 2; base <= 36; base++){
-            for (int n = 0; n <= 1000; n++){
+            for (int n = 0; n <= 999; n++){
+                String expected = Integer.toString(n,base).toUpperCase();
                 String converted = BaseConverter.toBase(n,base);
                 assertEquals(n, BaseConverter.toDecimal(converted,base));
-                assertEquals(Integer.toString(n,base).toUpperCase(), converted);
+                assertEquals(expected, converted);
+                assertEquals(expected, BaseConverter.toBaseRec(n, base));
             }
         }
     }
