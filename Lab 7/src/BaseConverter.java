@@ -121,7 +121,7 @@ public class BaseConverter {
         Purpose: Returns n written in the given base
         Input: 2 Integers n and base
         Output: String
-        Example: BaseConverter.toBase(10, 2) -> 1010
+        Example: BaseConverter.toBase(0, 2) -> "0"
      */
     public static String toBase(int n, int base) {
         // TODO: push each remainder onto the stack, then pop them off
@@ -160,7 +160,7 @@ public class BaseConverter {
         Purpose: Returns n written in the given base, the same as toBase, but recursively and without a stack
         Input: 2 Integers n and base
         Output: String
-        Example: BaseConverter.toBaseRec(10, 2) -> 1010
+        Example: BaseConverter.toBaseRec(0, 2) -> "0"
      */
     public static String toBaseRec(int n, int base) {
         // TODO: no loops and no stack - use recursion
@@ -180,6 +180,12 @@ public class BaseConverter {
      * has 1 more digit than n / base. countDigits(0, base) is 1.
      * Example: countDigits(4725, 10) is 4, countDigits(45, 2) is 6.
      * throws IllegalArgumentException if n is negative or base is not 2 to 36
+     */
+    /*
+        Purpose: Returns the number of digits needed to write n in the given base,recursively
+        Input: 2 Integers n and base
+        Output: int
+        Example: BaseConverter.countDigits(10, 10) -> 2
      */
     public static int countDigits(int n, int base) {
         // TODO: no loops - use recursion
@@ -223,6 +229,6 @@ public class BaseConverter {
 }
 
 // Questions:
-// 1.
-// 2. O(log n) and O(log n)
-// 3.
+// 1. n = 1 -> 1 call, n = 2 -> 2 calls, n = 4 -> 3 calls, n = 8 -> 4 calls, n = 16 -> 5 calls, n = 1024 -> 6 calls
+// 2. O(log n) and O(log n) because both make recursive calls to divide the n by base, and this continues until the n is less than base, so the number of calls is equal to log n
+// 3. The digits wait on the programs call stack since each time the recursive is called, it saved while it calls toBaseRec()
